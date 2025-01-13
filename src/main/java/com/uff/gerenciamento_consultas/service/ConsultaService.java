@@ -1,8 +1,10 @@
 package com.uff.gerenciamento_consultas.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.uff.gerenciamento_consultas.dto.ConsultaDTO;
@@ -10,9 +12,11 @@ import com.uff.gerenciamento_consultas.dto.ResponseDTO;
 import com.uff.gerenciamento_consultas.model.Consulta;
 import com.uff.gerenciamento_consultas.model.Medico;
 import com.uff.gerenciamento_consultas.model.Paciente;
+import com.uff.gerenciamento_consultas.model.Usuario;
 import com.uff.gerenciamento_consultas.repository.ConsultaRepository;
 import com.uff.gerenciamento_consultas.repository.MedicoRepository;
 import com.uff.gerenciamento_consultas.repository.PacienteRepository;
+import com.uff.gerenciamento_consultas.repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -21,6 +25,9 @@ public class ConsultaService {
   
   @Autowired
   private ConsultaRepository consultaRepository;
+
+  @Autowired
+  private UsuarioRepository usuarioRepository;
 
   @Autowired
   private MedicoRepository medicoRepository;
@@ -53,5 +60,19 @@ public class ConsultaService {
     consultaRepository.save(consulta);
 
     return new ResponseDTO("Consulta agendada com sucesso");
+  }
+
+  public List<Consulta> listar(String status) {
+    String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    Usuario usuario = usuarioRepository.findByEmail(email)
+      .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+
+    if (usuario instanceof Medico) {
+      return consultaRepository.findByMedicoCpfAndStatus(usuario.getCpf(), status);
+    } else {
+      return consultaRepository.findByPacienteCpfAndStatus(usuario.getCpf(), status);
+    }
   }
 }

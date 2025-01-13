@@ -10,6 +10,9 @@ import com.uff.gerenciamento_consultas.service.ConsultaService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -27,4 +30,14 @@ public class ConsultaController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
+
+  @GetMapping("/listar")
+  public ResponseEntity<Object> listarConsultas(@RequestParam String status) {
+    try {
+      return ResponseEntity.ok(consultaService.listar(status));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
+  
 }

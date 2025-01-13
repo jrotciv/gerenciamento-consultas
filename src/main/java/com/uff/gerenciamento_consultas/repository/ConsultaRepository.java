@@ -12,9 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.uff.gerenciamento_consultas.model.Medico;
+import com.uff.gerenciamento_consultas.model.Paciente;
 
 
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
   Optional<Consulta> findByMedicoAndDataAndHorario(Medico medico, LocalDate data, LocalTime horario);
+
+  List<Consulta> findByMedicoCpfAndStatus(String cpf, String status);
+  List<Consulta> findByPacienteCpfAndStatus(String cpf, String status);
 }

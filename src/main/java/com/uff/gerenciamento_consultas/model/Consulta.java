@@ -1,6 +1,7 @@
 package com.uff.gerenciamento_consultas.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -27,6 +28,7 @@ public class Consulta {
   private Long id;
 
   private LocalDate data;
+  private LocalTime horario;
   private String status;
   private String sintomas;
   private String diagnostico;

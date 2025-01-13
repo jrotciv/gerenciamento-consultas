@@ -75,4 +75,26 @@ public class ConsultaService {
       return consultaRepository.findByPacienteCpfAndStatus(usuario.getCpf(), status);
     }
   }
+
+  @Transactional
+  public ResponseDTO editar(Long id, ConsultaDTO consultaDTO) {
+    Consulta consulta = consultaRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+      
+    boolean consultaJaExiste = consultaRepository.findByMedicoAndDataAndHorario(consulta.getMedico(), consultaDTO.getData(), consultaDTO.getHorario()).isPresent();
+
+    if (consultaJaExiste) {
+      throw new RuntimeException("Horário indisponível, escolha outro horário");
+    }
+
+    consulta.setData(consultaDTO.getData());
+    consulta.setHorario(consultaDTO.getHorario());
+    consulta.setSintomas(consultaDTO.getSintomas());
+    consulta.setDiagnostico(consultaDTO.getDiagnostico());
+    consulta.setObservacoes(consultaDTO.getObservacoes());
+
+    consultaRepository.save(consulta);
+
+    return new ResponseDTO("Consulta atualizada");
+  }
 }

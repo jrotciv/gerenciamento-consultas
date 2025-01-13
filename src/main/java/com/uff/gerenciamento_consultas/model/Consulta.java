@@ -30,8 +30,8 @@ public class Consulta {
   private LocalDate data;
   private LocalTime horario;
   private String status;
-  private String sintomas;
-  private String diagnostico;
+  private List<String> sintomas;
+  private List<String> diagnostico;
   private List<String> observacoes;
 
   @CreatedDate

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -35,6 +38,15 @@ public class ConsultaController {
   public ResponseEntity<Object> listarConsultas(@RequestParam String status) {
     try {
       return ResponseEntity.ok(consultaService.listar(status));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Object> editarConsulta(@PathVariable Long id, @RequestBody ConsultaDTO consultaDTO) {
+    try {
+      return ResponseEntity.ok(consultaService.editar(id, consultaDTO));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }

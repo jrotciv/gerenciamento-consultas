@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.uff.gerenciamento_consultas.dto.UsuarioDTO;
 import com.uff.gerenciamento_consultas.model.Usuario;
 import com.uff.gerenciamento_consultas.service.UsuarioService;
 
@@ -27,9 +28,10 @@ public class UsuarioController {
   }
 
   @PostMapping("/cadastrar")
-  public ResponseEntity<Object> cadastrar(@RequestBody Usuario usuario) {
+  public ResponseEntity<Object> cadastrar(@RequestBody UsuarioDTO usuario) {
       try {
-          return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(usuario));
+          usuarioService.save(usuario);
+          return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso!");
       } catch (Exception e) {
           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
       }

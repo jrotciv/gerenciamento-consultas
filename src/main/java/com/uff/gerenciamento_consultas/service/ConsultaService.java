@@ -97,4 +97,16 @@ public class ConsultaService {
 
     return new ResponseDTO("Consulta atualizada");
   }
+
+  @Transactional
+  public ResponseDTO alterarStatus(Long id, String status) {
+    Consulta consulta = consultaRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+    
+    consulta.setStatus(status);
+
+    consultaRepository.save(consulta);
+
+    return new ResponseDTO("Status da consulta atualizado");
+  }
 }

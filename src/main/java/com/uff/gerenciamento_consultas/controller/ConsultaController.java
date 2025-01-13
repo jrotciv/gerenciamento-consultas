@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,5 +52,13 @@ public class ConsultaController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
-  
+ 
+  @PatchMapping("/{id}")
+  public ResponseEntity<Object> editarStatusConsulta(@PathVariable Long id, @RequestParam String status) {
+    try {
+      return ResponseEntity.ok(consultaService.alterarStatus(id, status));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
 }

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/consulta")
+@RequestMapping("/consultas")
 public class ConsultaController {
   
   @Autowired
   private ConsultaService consultaService;
 
-  @PostMapping("/agendar")
+  @PostMapping("")
   public ResponseEntity<Object> agendarConsulta(@RequestBody ConsultaDTO consultaDTO) {
     try {
       return ResponseEntity.ok(consultaService.criar(consultaDTO));
@@ -31,7 +31,7 @@ public class ConsultaController {
     }
   }
 
-  @GetMapping("/listar")
+  @GetMapping("")
   public ResponseEntity<Object> listarConsultas(@RequestParam String status) {
     try {
       return ResponseEntity.ok(consultaService.listar(status));

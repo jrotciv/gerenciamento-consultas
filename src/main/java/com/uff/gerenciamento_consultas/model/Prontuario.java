@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,13 @@ public class Prontuario {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String diagnostico;
+  private List<String> diagnostico;
   private List<String> medicamentos;
   private List<String> tratamentos;
   private List<String> observacoes;
+
+  @ManyToOne
+  private Paciente paciente;
 
   @CreatedDate
   @Column(updatable = false)

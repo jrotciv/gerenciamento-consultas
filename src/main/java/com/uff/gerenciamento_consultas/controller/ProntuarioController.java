@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -42,5 +44,12 @@ public class ProntuarioController {
     }
   }
   
-  
+  @PutMapping("/{cpf}")
+  public ResponseEntity<Object> atualizar(@PathVariable String cpf, @RequestBody ProntuarioDTO prontuario) {
+    try {
+      return ResponseEntity.ok(prontuarioService.atualizar(cpf, prontuario));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage()));
+    }
+  }
 }

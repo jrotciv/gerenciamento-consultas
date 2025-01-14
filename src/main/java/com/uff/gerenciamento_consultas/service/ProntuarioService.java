@@ -49,4 +49,24 @@ public class ProntuarioService {
     return prontuarioRepository.findByPacienteCpf(cpf)
       .orElseThrow(() -> new RuntimeException("Prontuário não encontrado"));
   }
+
+  @Transactional
+  public ResponseDTO atualizar(String cpf, ProntuarioDTO prontuarioDTO) {
+    Prontuario prontuario = prontuarioRepository.findByPacienteCpf(cpf)
+      .orElseThrow(() -> new RuntimeException("Prontuário não encontrado"));
+
+    Paciente paciente = pacienteRepository.findById(cpf)
+      .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+
+    prontuario.setDiagnostico(prontuarioDTO.getDiagnostico());
+    prontuario.setMedicamentos(prontuarioDTO.getMedicamentos());
+    prontuario.setTratamentos(prontuarioDTO.getTratamentos());
+    prontuario.setObservacoes(prontuarioDTO.getObservacoes());
+    prontuario.setPaciente(paciente);
+    prontuario.setAtualizadoEm(LocalDate.now());
+
+    prontuarioRepository.save(prontuario);
+
+    return new ResponseDTO("Prontuário atualizado com sucesso");
+  }
 }

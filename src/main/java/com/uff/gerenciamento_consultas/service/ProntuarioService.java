@@ -44,4 +44,9 @@ public class ProntuarioService {
 
     return new ResponseDTO("Prontuário criado com sucesso");
   }
+
+  public Prontuario visualizar(String cpf) {
+    return prontuarioRepository.findByPacienteCpf(cpf)
+      .orElseThrow(() -> new RuntimeException("Prontuário não encontrado"));
+  }
 }

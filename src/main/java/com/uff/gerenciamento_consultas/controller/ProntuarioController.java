@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.uff.gerenciamento_consultas.dto.ProntuarioDTO;
 import com.uff.gerenciamento_consultas.dto.ResponseDTO;
 import com.uff.gerenciamento_consultas.service.ProntuarioService;
+
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 @Controller
@@ -27,5 +32,15 @@ public class ProntuarioController {
       return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage()));
     }
   }
+
+  @GetMapping("/{cpf}")
+  public ResponseEntity<Object> visualizar(@PathVariable String cpf) {
+    try {
+      return ResponseEntity.ok(prontuarioService.visualizar(cpf));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage()));
+    }
+  }
+  
   
 }

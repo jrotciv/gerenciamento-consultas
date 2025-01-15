@@ -76,10 +76,22 @@ public class UsuarioService {
           throw new RuntimeException("Credenciais inválidas");
       }
 
+      var tokenResponse = new AuthTokenDTO();
+
+      if (usuarioEncontrado instanceof Medico) {
+            tokenResponse.setType("Medico");
+        } else if (usuarioEncontrado instanceof Paciente) {
+            tokenResponse.setType("Paciente");
+        } else {
+            throw new RuntimeException("Tipo de usuário inválido");
+      }
+
       Algorithm algorithm = Algorithm.HMAC256(secret);
       var token = JWT.create().withIssuer(secret).withExpiresAt(Instant.now().plus(Duration.ofHours(2))).withSubject(usuario.getEmail()).sign(algorithm);
 
-      return new AuthTokenDTO(token);
+      tokenResponse.setToken(token);
+
+      return tokenResponse;
   }
 
   private void populateUsuario(Usuario usuario, UsuarioDTO usuarioDTO) {
